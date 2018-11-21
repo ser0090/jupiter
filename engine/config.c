@@ -15,7 +15,7 @@ static void parse_line(char *line)
     }
     if (strstr(line, KEY_LOG_FILE)){
             char *value = strchr(line, '=');
-                
+
             if (value) {
                 value[strlen(value) - 1] = 0x0;
                 int i = 0;
@@ -27,15 +27,14 @@ static void parse_line(char *line)
 
 void get_conf()
 {
-    char buffer[MAX_LINE_LEN]; 
+    char buffer[MAX_LINE_LEN];
     FILE *cfg = fopen(CONFIG_FILE, "r");
-
     while (fgets(buffer, MAX_LINE_LEN, cfg)) {
-        if (strlen(buffer) > 1 && buffer[0] != '#') { 
+        if (strlen(buffer) > 1 && buffer[0] != '#') {
             parse_line(buffer);
         }
     }
 
     fclose(cfg);
-    
+
 }

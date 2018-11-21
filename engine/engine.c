@@ -9,6 +9,7 @@
 #include "search.h"
 #include "fen.h"
 #include "logging.h"
+#include <omp.h>
 
 static void (*log_func)(const char *info) = NULL;
 
@@ -25,11 +26,15 @@ static void generate_nodes(Node_t *node)
     Node_t *aux = node;
 
     while(aux != NULL) {
+
         if (aux->child != NULL) {
+            #pragma omp task
             generate_nodes(aux->child);
-        } else { 
+        } else {
+            #pragma omp task
             get_moves(aux);
         }
+
         aux = aux->next;
     }
 }
@@ -38,20 +43,38 @@ static engine_info_t engine_think(Node_t *node)
 {
     engine_info_t info;
     clock_t start, end;
-    
+    double start_time,total_time,gen_time,best_move_time;
+
     start = get_clock_ms();
 
-    generate_nodes(node);
-    get_best_move(node, info.mov);
+
+
+    start_time = omp_get_wtime();
+    #pragma omp parallel
+    {
+      #pragma omp single
+      generate_nodes(node); // paralelizar aca
+    }
+      gen_time = omp_get_wtime();
+      get_best_move(node, info.mov); // paralelizar aca
+//      #pragma omp taskwait
+      best_move_time = omp_get_wtime();
+//    }
+    total_time = best_move_time-start_time;
 
     end = get_clock_ms();
-    info.time = clock_diff_ms(end, start);
+    info.time = (int)(1000*total_time);//clock_diff_ms(end, start);
     info.nodes_count = get_tree_count(node) - 1;
     if (info.time > 0) {
         info.nps = (info.nodes_count * 1000) / info.time;
     } else {
         info.nps = 0;
     }
+
+
+    printf("\n  tiempo total: %f \n    tiempo de generar: %f   %f\n    tiempo de busqueda: %f   %f\n",
+                    total_time, gen_time-start_time ,100.0*(gen_time-start_time)/total_time,
+                    best_move_time-gen_time,100.0*(best_move_time-gen_time)/total_time);
 
     return info;
 }
@@ -71,8 +94,8 @@ static bool keep_running(engine_cfg_t cfg, uint32_t elapsed_time, uint8_t curren
             return false;
         }
     }
-        
-    return true;        
+
+    return true;
 }
 
 static void log_info(engine_info_t info, uint8_t depth, uint32_t elapsed_time)
@@ -80,7 +103,7 @@ static void log_info(engine_info_t info, uint8_t depth, uint32_t elapsed_time)
     char msg[1000];
 
     if (log_func != NULL) {
-        sprintf(msg, "info depth %d score cp %d time %d nodes %d nps %d",
+        sprintf(msg, "info depth %d score cp %d time %d[ms] nodes %d nps %d",
               depth, info.score, elapsed_time, info.nodes_count,
               info.nps);
         log_func(msg);
@@ -107,8 +130,8 @@ char* engine_go(Node_t *node, engine_cfg_t cfg)
         current_depth++;
         elapsed_time += info.time;
         log_info(info, current_depth, elapsed_time);
-    } 
+    }
 
     delete_node(node);
     return info.mov;
-} 
+}

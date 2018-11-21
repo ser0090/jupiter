@@ -11,7 +11,7 @@ static int32_t get_minimax(Node_t *node)
 
     while (aux != NULL) {
         if ((node->turn == BLACK && aux->value < minmax) ||
-            (node->turn == WHITE && aux->value > minmax)) { 
+            (node->turn == WHITE && aux->value > minmax)) {
             minmax = aux->value;
         }
         aux = aux->next;
@@ -59,4 +59,3 @@ void get_best_move(Node_t *node, char *move)
     search(node);
     get_move(node, move);
 }
-
