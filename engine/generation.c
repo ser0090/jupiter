@@ -104,7 +104,7 @@ static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece, char c
         return RV_NO_MEMORY;
     }
 
-    new->turn   = parent->turn * -1;
+    new->turn   = parent->turn * (int8_t)-1;
     new->castles = parent->castles;
     memcpy(&new->board, &parent->board, sizeof(Board));
 
@@ -120,7 +120,7 @@ static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece, char c
 
 static void clear_castle(Node_t *node, Move_t move)
 {
-    uint8_t castles = node->turn == WHITE ? B_CASTLES: W_CASTLES;
+    uint8_t castles = node->turn == WHITE ? (int8_t)B_CASTLES: (int8_t)W_CASTLES;
     switch (move.from[1]) {
         case COL_E:
             break;
@@ -139,8 +139,8 @@ static void clear_castle(Node_t *node, Move_t move)
 
 static void make_castle(Node_t *node, Move_t mov)
 {
-    uint8_t rook_from = mov.to[1] == COL_G? COL_H: COL_A;
-    uint8_t rook_to = mov.to[1] == COL_G? COL_F: COL_D;
+    uint8_t rook_from = mov.to[1] == COL_G? (uint8_t)COL_H: (uint8_t)COL_A;
+    uint8_t rook_to = mov.to[1] == COL_G? (uint8_t)COL_F: (uint8_t)COL_D;
 
     node->board[mov.from[0]][rook_to] = node->board[mov.from[0]][rook_from];
     node->board[mov.from[0]][rook_from] = 0;
@@ -153,23 +153,23 @@ static void make_passant(Node_t *node, Move_t mov)
 
 static void make_promotion(Node_t *node, Move_t mov)
 {
-    int8_t turn = TURN(node->board, mov.from[0], mov.from[1]);
+    int8_t turn = (int8_t)TURN(node->board, mov.from[0], mov.from[1]);
     node->board[mov.from[0]][mov.from[1]] = 0;
-    int16_t piece;
+    int16_t piece = 0;
     
     switch (mov.to[0]) {
         case PROMOTION_QUEEN:
-            piece = QUEEN * turn;
+            piece = (int16_t)(QUEEN * turn);
             break;
         case PROMOTION_BISHOP:
-            piece = BISHOP * turn;
+            piece = (int16_t)(BISHOP * turn);
             break;
         case PROMOTION_KNIGHT:
-            piece = KNIGHT * turn;
+            piece = (int16_t)(KNIGHT * turn);
             break;
     }
 
-    node->turn = node->turn * -1;
+    node->turn = node->turn * (int8_t)-1;
     node->half_moves++;
     if (node->turn == WHITE) {
         node->moves++;
@@ -199,7 +199,7 @@ retval_t make_move(Node_t *node, Move_t mov)
     node->board[mov.to[0]][mov.to[1]] = node->board[mov.from[0]][mov.from[1]];
     node->board[mov.from[0]][mov.from[1]] = 0;
 
-    node->turn = node->turn * -1;
+    node->turn = node->turn * (int8_t) -1;
     node->half_moves++;
     if (node->turn == WHITE) {
         node->moves++;
@@ -252,7 +252,7 @@ retval_t insert_move(Node_t *parent, Move_t move)
         return RV_NO_MEMORY;
     }
 
-    new->turn   = parent->turn * -1;
+    new->turn   = parent->turn * (int8_t)-1;
     new->castles = parent->castles;
     memcpy(&new->board, &parent->board, sizeof(Board));
 
@@ -274,13 +274,13 @@ retval_t insert_promotion(Node_t *parent, Move_t move)
 {
     retval_t rv;
 
-    rv = new_promotion(parent, move, QUEEN * parent->turn, 'q');
+    rv = new_promotion(parent, move, (int16_t)(QUEEN * parent->turn), 'q');
     SUCCES_OR_RETURN(rv);
 
-    rv = new_promotion(parent, move, KNIGHT * parent->turn, 'n');
+    rv = new_promotion(parent, move, (int16_t)(KNIGHT * parent->turn), 'n');
     SUCCES_OR_RETURN(rv);
 
-    rv = new_promotion(parent, move, BISHOP * parent->turn, 'b');
+    rv = new_promotion(parent, move, (int16_t)(BISHOP * parent->turn), 'b');
     SUCCES_OR_RETURN(rv);
 
     return RV_SUCCESS;
@@ -297,13 +297,13 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
         return RV_NO_MEMORY;
     }
 
-    new->turn   = parent->turn * -1;
+    new->turn   = parent->turn * (int8_t)-1;
     memcpy(&new->board, &parent->board, sizeof(Board));
 
-    uint8_t file = parent->turn == WHITE ? FILE_1: FILE_8;
-    uint8_t rook = castle & SHORT_CASTLES ? COL_H: COL_A;
-    uint8_t new_rook = castle & SHORT_CASTLES ? COL_F: COL_D;
-    uint8_t new_king = castle & SHORT_CASTLES ? COL_G: COL_C;
+    uint8_t file = parent->turn == WHITE ? (int8_t)FILE_1: (int8_t)FILE_8;
+    uint8_t rook = castle & SHORT_CASTLES ? (int8_t)COL_H: (int8_t)COL_A;
+    uint8_t new_rook = castle & SHORT_CASTLES ? (int8_t)COL_F: (int8_t)COL_D;
+    uint8_t new_king = castle & SHORT_CASTLES ? (int8_t)COL_G: (int8_t)COL_C;
 
     new->board[file][new_rook] = new->board[file][rook];
     new->board[file][new_king] = new->board[file][COL_E];
@@ -332,7 +332,7 @@ retval_t insert_passant(Node_t *parent, Move_t move)
         return RV_NO_MEMORY;
     }
 
-    new->turn   = parent->turn * -1;
+    new->turn   = parent->turn * (int8_t)-1;
     new->castles = parent->castles;
     memcpy(&new->board, &parent->board, sizeof(Board));
 

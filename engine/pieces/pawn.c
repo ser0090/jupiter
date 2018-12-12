@@ -95,7 +95,7 @@ bool pawn_attak_square(Board board, square from, square to)
 
 static bool isolated_pawn(Board board, uint8_t file, uint8_t rank)
 {
-    int8_t pawn = board[file][rank];
+    int8_t pawn = (int8_t)board[file][rank];
 
     for (int i = FILE_2; i < FILE_8; i++) {
         if (rank > COL_A) {
@@ -115,8 +115,8 @@ static bool isolated_pawn(Board board, uint8_t file, uint8_t rank)
 
 static bool passed_pawn(Board board, uint8_t file, uint8_t rank)
 {
-    int8_t step = board[file][rank];
-    int8_t pawn = board[file][rank] * -1;
+    int8_t step = (int8_t)board[file][rank];
+    int8_t pawn = (int8_t)board[file][rank] * (int8_t)-1;
 
     for (int i = file; i < FILE_8 && i > FILE_1; i += step) {
         if (rank > COL_A) {
@@ -136,7 +136,7 @@ static bool passed_pawn(Board board, uint8_t file, uint8_t rank)
 
 static bool doubled_pawn(Board board, uint8_t file, uint8_t rank)
 {
-    int8_t pawn = board[file][rank];
+    int8_t pawn = (int8_t)board[file][rank];
 
     for (int i = FILE_2; i < FILE_8; i++) {
         if (board[i][rank] == pawn && i != file) {

@@ -34,8 +34,8 @@ bool bishop_attak_square(Board board, square from, square to)
     }
 
     if (abs(from[0] - to[0]) == abs(from[1] - to[1])) {
-        int8_t file_step = (to[0] - from[0]) > 0 ? 1: -1;
-        int8_t rank_step = (to[1] - from[1]) > 0 ? 1: -1;
+        int8_t file_step = (to[0] - from[0]) > 0 ? (int8_t)1: (int8_t)-1;
+        int8_t rank_step = (to[1] - from[1]) > 0 ? (int8_t)1: (int8_t)-1;
         for (int8_t i = from[0] + file_step, j = from[1] + rank_step;
              i != to[0] && j != to[1]; i += file_step, j += rank_step) {
             if (board[i][j] != 0) {
