@@ -10,3 +10,4 @@ TODO.md
 tags
 tests/tmp_*
 *.log
+engine/perf.data*

@@ -31,7 +31,7 @@ static void generate_nodes(Node_t *node)
             #pragma omp task
             generate_nodes(aux->child);
         } else {
-            #pragma omp task
+            #pragma omp task untied
             get_moves(aux);
         }
 
@@ -42,12 +42,7 @@ static void generate_nodes(Node_t *node)
 static engine_info_t engine_think(Node_t *node)
 {
     engine_info_t info;
-    clock_t start, end;
     double start_time,total_time,gen_time,best_move_time;
-
-    start = get_clock_ms();
-
-
 
     start_time = omp_get_wtime();
     #pragma omp parallel
@@ -62,8 +57,7 @@ static engine_info_t engine_think(Node_t *node)
 //    }
     total_time = best_move_time-start_time;
 
-    end = get_clock_ms();
-    info.time = (int)(1000*total_time);//clock_diff_ms(end, start);
+    info.time = (uint32_t) (1000 * total_time);//clock_diff_ms(end, start);
     info.nodes_count = get_tree_count(node) - 1;
     if (info.time > 0) {
         info.nps = (info.nodes_count * 1000) / info.time;
@@ -103,7 +97,7 @@ static void log_info(engine_info_t info, uint8_t depth, uint32_t elapsed_time)
     char msg[1000];
 
     if (log_func != NULL) {
-        sprintf(msg, "info depth %d score cp %d time %d[ms] nodes %d nps %d",
+        sprintf(msg, "INFO: depth %d score cp %d time %d[ms] nodes %d nps %d",
               depth, info.score, elapsed_time, info.nodes_count,
               info.nps);
         log_func(msg);

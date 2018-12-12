@@ -9,9 +9,9 @@
  * Center control
  */
 
-static int material_evaluation(Board board)
+static int32_t material_evaluation(Board board)
 {
-    int material = 0;
+    int32_t material = 0;
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -25,8 +25,8 @@ static int32_t pieces_evaluation(Board board)
 {
     int32_t material = 0;
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (uint8_t i = 0; i < 8; i++) {
+        for (uint8_t j = 0; j < 8; j++) {
             switch(board[i][j]) {
                 case PAWN_B:
                 case PAWN_W:
@@ -105,12 +105,11 @@ static int32_t center_control(Board board)
     square e5 = {FILE_5, COL_E};
     square f4 = {FILE_4, COL_F};
     square f5 = {FILE_5, COL_F};
-
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (int8_t i = 0; i < 8; i++) {
+        for (int8_t j = 0; j < 8; j++) {
             if (board[i][j] != 0) {
                 square from = {i, j};
-                turn = TURN(board, i, j);
+                turn = (int8_t)TURN(board, i, j);
 
                 if (piece_attack_square(board, from, c4)) {
                     control += CENTER_CONTROL_C4_POND * turn;
@@ -142,9 +141,20 @@ static int32_t center_control(Board board)
     return control;
 }
 
+//TODO: task solo center control
 int32_t evaluate(Board board)
 {
-    return (material_evaluation(board) +
-            pieces_evaluation(board) +
-            center_control(board));
+    int32_t cc =0;
+    int32_t me =0;
+    int32_t pe =0;
+
+    //#pragma omp task untied
+    {
+        cc =center_control(board);
+    }
+
+    pe = pieces_evaluation(board);
+    me = material_evaluation(board);
+    //#pragma omp taskwait
+    return cc + me + pe;
 }

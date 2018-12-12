@@ -29,7 +29,7 @@ static void count_deep(const Node_t *root, uint8_t deep)
 
     while(aux != NULL) {
         if (aux->child != NULL) {
-            count_deep(aux->child, deep + 1);
+            count_deep(aux->child, deep + (uint8_t)1);
         } 
         aux = aux->next;
     }
@@ -66,13 +66,19 @@ void insert_node(Node_t *parent, Node_t *child)
 
     if (parent->child == NULL) {
         parent->child = child;
+        parent->last_child = child;
     }
     else {
-        Node_t *aux = parent->child;
+        parent->last_child->next = child;
+        parent->last_child = child;
+
+        /*Node_t *aux = parent->child;
+        //int i = 0;
         while (aux->next != NULL) {
             aux = aux->next;
         }
-        aux->next = child;
+        aux->next = child;*/
+        //printf("accesos %d\n",i);
     }
 }
 

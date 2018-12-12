@@ -130,6 +130,7 @@ struct Node {
 	struct Node  *child;
 	struct Node  *next;
 	struct Node  *parent;
+	struct Node  *last_child;
 };
 
 typedef struct Node Node_t;
