@@ -47,11 +47,22 @@ static engine_info_t engine_think(Node_t *node)
     start_time = omp_get_wtime();
     #pragma omp parallel
     {
+<<<<<<< Updated upstream
         #pragma omp single
         generate_nodes(node); // paralelizar aca
     }
+=======
+      #pragma omp single
+      generate_nodes(node); // paralelizar aca
+      #pragma omp barrier
+
+      #pragma omp single
+>>>>>>> Stashed changes
       gen_time = omp_get_wtime();
+
+      #pragma omp single
       get_best_move(node, info.mov); // paralelizar aca
+    }
 //      #pragma omp taskwait
       best_move_time = omp_get_wtime();
 //    }

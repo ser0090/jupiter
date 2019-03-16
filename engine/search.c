@@ -27,14 +27,19 @@ static void search(Node_t *root)
     while(aux != NULL) {
         if (aux->child != NULL) {
             if (aux->child->child == NULL) {
+
+#pragma omp task firstprivate(aux)
                 aux->value = get_minimax(aux);
             } else {
+#pragma omp task depend(out: aux) firstprivate(aux)
                 search(aux->child);
+#pragma omp task  depend(in: aux) firstprivate(aux)
                 aux->value = get_minimax(aux);
             }
         }
         aux = aux->next;
     }
+    #pragma omp taskwait
 }
 
 static retval_t get_move(Node_t *node, char *move)

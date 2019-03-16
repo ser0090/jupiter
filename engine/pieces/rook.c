@@ -50,7 +50,8 @@ bool rook_attak_square(Board board, square from, square to)
             if (board[i][j] != 0) {
                 return false;
             }
-        }   
+        }
+
         return true;
     }
     return false;

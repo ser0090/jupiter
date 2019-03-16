@@ -1,7 +1,7 @@
 EXEC    = jupitests
 
 CFLAGS  = -c -g -fPIC -std=c99 -Wall -fopenmp -lgcov --coverage 
-LDFLAGS = -lgcov --coverage
+LDFLAGS = -fopenmp -lgcov --coverage
 
 ALLSOURCES = $(wildcard *.c) $(wildcard cu/*.c) $(wildcard ../engine/**/*.c) $(wildcard ../engine/*.c)
 EXCLUDES= ../engine/main.c
