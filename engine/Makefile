@@ -1,9 +1,10 @@
 EXEC    = jupiter
-#GPFLAG = -pg
-CFLAGS  = $(GPFLAG) -c -fPIC -std=c99 -Wall -fopenmp -O3
-DBCFLAGS  = $(GPFLAG) -c -g -fPIC -std=c99 -Wall -lgcov --coverage -fopenmp
-LDFLAGS = $(GPFLAG) -fopenmp
-DBLDFLAGS = $(GPFLAG) -lgcov --coverage -fopenmp
+GPFLAG = -pg
+#OPTFLAG = -O3 -mno-avx -march=native
+CFLAGS  = $(OPTFLAG) $(GPFLAG) -c -std=c99 -Wall -fopenmp
+#DBCFLAGS  = $(OPTFLAG) $(GPFLAG) -c -g -fPIC -std=c99 -Wall -lgcov --coverage -fopenmp
+LDFLAGS = $(OPTFLAG) $(GPFLAG) -fopenmp
+#DBLDFLAGS = $(OPTFLAG) $(GPFLAG) -lgcov --coverage -fopenmp
 
 CSOURCES = $(wildcard *.c) $(wildcard pieces/*.c)
 
@@ -17,8 +18,8 @@ LIBS =
 
 all: $(CSOURCES) $(EXEC) 
 
-debug:
-	@$(MAKE) CFLAGS="$(DBCFLAGS)" LDFLAGS="$(DBLDFLAGS)"
+#debug:
+#	@$(MAKE) CFLAGS="$(DBCFLAGS)" LDFLAGS="$(DBLDFLAGS)"
 
 
 $(EXEC): $(COBJECTS)
@@ -34,4 +35,3 @@ clean:
 		rm -rf *.o
 		rm -rf pieces/*.o
 		rm -rf $(EXEC)
-

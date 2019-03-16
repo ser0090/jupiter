@@ -45,7 +45,7 @@ bool rook_attak_square(Board board, square from, square to)
         if (from[1] != to[1]) {
             rank_step = from[1] < to[1] ? (int8_t)1: (int8_t)-1;
         }
-        for (int8_t i = from[0] + file_step, j = from[1] + rank_step;
+        for (register int8_t i = from[0] + file_step, j = from[1] + rank_step;
              i != to[0] || j != to[1]; i += file_step, j += rank_step) {
             if (board[i][j] != 0) {
                 return false;

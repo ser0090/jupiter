@@ -11,3 +11,8 @@ tags
 tests/tmp_*
 *.log
 engine/perf.data*
+# Clion
+.idea/
+CMakeFiles/
+cmake-build-release/
+cmake-build-debug/

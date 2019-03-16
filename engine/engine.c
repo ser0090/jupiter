@@ -31,7 +31,7 @@ static void generate_nodes(Node_t *node)
             #pragma omp task
             generate_nodes(aux->child);
         } else {
-            #pragma omp task untied
+            #pragma omp task
             get_moves(aux);
         }
 
@@ -47,8 +47,8 @@ static engine_info_t engine_think(Node_t *node)
     start_time = omp_get_wtime();
     #pragma omp parallel
     {
-      #pragma omp single
-      generate_nodes(node); // paralelizar aca
+        #pragma omp single
+        generate_nodes(node); // paralelizar aca
     }
       gen_time = omp_get_wtime();
       get_best_move(node, info.mov); // paralelizar aca
