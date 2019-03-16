@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 project(jupiter C)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp -O3 -mno-avx -march=native ")
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}  -fopenmp")
+# -O3 -mno-avx -march=native
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}  -fopenmp")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}  -fopenmp")
 
 include_directories(engine)
 include_directories(engine/pieces/include)

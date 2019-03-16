@@ -24,6 +24,7 @@ static Node_t* create_move(void)
     new->child  = NULL;
     new->next   = NULL;
     new->parent = NULL;
+    new->last_child = NULL;
 
     new->value  = 0;
 
@@ -231,6 +232,7 @@ retval_t move_init(Node_t **node)
     new_node->child         = NULL;
     new_node->next          = NULL;
     new_node->parent        = NULL;
+    new_node->last_child = NULL;
 
     *node = new_node;
     return RV_SUCCESS;
@@ -238,7 +240,15 @@ retval_t move_init(Node_t **node)
 
 retval_t get_moves(Node_t *node)
 {
-    return WALK_BOARD(node, get_piece_moves, NULL);
+    //return WALK_BOARD(node, get_piece_moves, NULL);
+    retval_t rv;
+    for(int j = COL_A; j <= COL_H; j++) {
+        for(int i = FILE_1; i <= FILE_8; i++){
+            rv = get_piece_moves(node, i , j,NULL);
+            SUCCES_OR_RETURN(rv);
+        }
+    }
+    return RV_SUCCESS;
 }
 
 retval_t insert_move(Node_t *parent, Move_t move)

@@ -144,17 +144,8 @@ static int32_t center_control(Board board)
 //TODO: task solo center control
 int32_t evaluate(Board board)
 {
-    int32_t cc =0;
-    int32_t me =0;
-    int32_t pe =0;
-
-    //#pragma omp task untied
-    {
-        cc =center_control(board);
-    }
-
-    pe = pieces_evaluation(board);
-    me = material_evaluation(board);
     //#pragma omp taskwait
-    return cc + me + pe;
+    return center_control(board) +
+           pieces_evaluation(board) +
+           material_evaluation(board);
 }

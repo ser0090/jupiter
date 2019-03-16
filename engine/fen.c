@@ -253,7 +253,7 @@ retval_t get_fen_from_node(Node_t *node, char *fen)
     char buffer[MAX_FEN_LEN] = {0};
     char *buff = buffer;
 
-    memset(buffer, 0x0, MAX_FEN_LEN);
+    memset(buffer,(char) 0, MAX_FEN_LEN);
 
     rv = set_fen_pieces(node, &buff);
     SUCCES_OR_RETURN(rv);

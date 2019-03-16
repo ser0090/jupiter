@@ -142,8 +142,8 @@ typedef retval_t (*Walk_Function) (Node_t *node, uint8_t rank, uint8_t file, squ
 inline retval_t WALK_BOARD(Node_t *node, Walk_Function func, square to)
 {
     retval_t rv;
-    for(int i = FILE_1; i <= FILE_8; i++) {
-        for(int j = COL_A; j <= COL_H; j++) {
+    for(int j = COL_A; j <= COL_H; j++) {
+        for(int i = FILE_1; i <= FILE_8; i++){
             rv = func(node, i , j, to);
             SUCCES_OR_RETURN(rv);
         }

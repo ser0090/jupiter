@@ -11,3 +11,5 @@ tags
 tests/tmp_*
 *.log
 engine/perf.data*
+# Clion
+.idea/
