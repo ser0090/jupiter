@@ -41,6 +41,7 @@ static retval_t get_piece_moves(Node_t *node, uint8_t rank, uint8_t file, square
     square from = {file, rank};
     switch(node->board[file][rank] * node->turn) {
         case PAWN:
+            #pragma omp task
             rv = get_pawn_moves(node, from);
             break;
         case ROOK:

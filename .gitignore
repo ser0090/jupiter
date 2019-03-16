@@ -13,3 +13,6 @@ tests/tmp_*
 engine/perf.data*
 # Clion
 .idea/
+CMakeFiles/
+cmake-build-release/
+cmake-build-debug/
