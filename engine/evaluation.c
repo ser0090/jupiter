@@ -11,14 +11,9 @@
 
 static int32_t material_evaluation(Board board)
 {
-<<<<<<< Updated upstream
-    int32_t material = 0;
-    int16_t * ptr;
-=======
     register int16_t * ptr;
     register int32_t material = 0;
 
->>>>>>> Stashed changes
     for (int i = 0; i < 8; i++) {
         ptr = &(board[i][0]);
         for (int j = 0; j < 8; j++) {
@@ -30,18 +25,11 @@ static int32_t material_evaluation(Board board)
 
 static int32_t pieces_evaluation(Board board)
 {
-<<<<<<< Updated upstream
-    int32_t material = 0;
-    int16_t * ptr;
-    for (uint8_t i = 0; i < 8; i++) {
-        ptr = &(board[i][0]);
-=======
     register int16_t * ptr;
     register int32_t material = 0;
 
     for (uint8_t i = 0; i < 8; i++) {
       ptr = &(board[i][0]);
->>>>>>> Stashed changes
         for (uint8_t j = 0; j < 8; j++) {
             switch(*(ptr++)) {
                 case PAWN_B:
@@ -121,15 +109,9 @@ static int32_t center_control(Board board)
     square e5 = {FILE_5, COL_E};
     square f4 = {FILE_4, COL_F};
     square f5 = {FILE_5, COL_F};
-<<<<<<< Updated upstream
-    int16_t * ptr;
-    for (int8_t i = 0; i < 8; i++) {
-        ptr = &(board[i][0]);
-=======
     register int16_t * ptr;
     for (int8_t i = 0; i < 8; i++) {
       ptr = &(board[i][0]);
->>>>>>> Stashed changes
         for (int8_t j = 0; j < 8; j++) {
             if (*(ptr++) != 0) {
                 square from = {i, j};
