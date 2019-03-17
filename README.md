@@ -1,4 +1,5 @@
-# Jupiter  
+# Jupiter 
+
 [![Build Status](https://travis-ci.org/maralonso/jupiter.svg?branch=master)](https://travis-ci.org/maralonso/jupiter)  
 [![codecov](https://codecov.io/gh/maralonso/jupiter/branch/master/graph/badge.svg)](https://codecov.io/gh/maralonso/jupiter)  
 
@@ -55,3 +56,30 @@ By default the engine will log to `./jupiter.log`
 
 `LOG_FILE = jupiter.log`
 
+## Parallel version
+### Prerequisites
+  * [gcc-7.3+](https://ftp.gnu.org/gnu/gcc/gcc-7.3.0/)
+
+#### Configuration GCC 7.3
+```
+ export PATH="</path>/gcc/bin:$PATH"
+ export LD_LIBRARY_PATH="</path>/gcc/lib64:$LD_LIBRARY_PATH"
+ export LD_RUN_PATH="</path>/gcc/lib64:$LD_RUN_PATH"
+ cd </path>gcc/bin/
+ ln -s ./gcc cc 
+ export CC="</path>/gcc/bin/gcc"
+```
+### Built
+#### Debug
+```
+cd </path>jupiter/
+cmake -DCMAKE_BUILD_TYPE=Debug .
+make
+```
+
+#### Release
+```
+cd </path>jupiter/
+cmake -DCMAKE_BUILD_TYPE=Release .
+make
+```
